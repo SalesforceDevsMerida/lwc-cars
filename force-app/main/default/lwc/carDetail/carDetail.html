@@ -1,0 +1,90 @@
+<!-- sldsValidatorIgnore -->
+<template>
+  <article class="slds-card">
+    <div class="slds-card__header slds-grid">
+      <header class="slds-media slds-media_center slds-has-flexi-truncate">
+        <div class="slds-media__figure">
+          <span class="slds-icon_container" title="Coche">
+            <span class="slds-assistive-text">Carro</span>
+          </span>
+        </div>
+        <div class="slds-media__body">
+          <h2 class="slds-card__header-title">
+            <a
+              href="#"
+              class="slds-card__header-link slds-truncate"
+              title={name}
+            >
+              <span>{name}</span>
+            </a>
+          </h2>
+        </div>
+        <div class="slds-no-flex">
+          <lightning-button-icon
+            if:true={showDisplayDetailsButton}
+            icon-name="utility:expand_alt"
+            alternative-text="Expandir el detalle del coche"
+            title="Abrir detalle del coche"
+          ></lightning-button-icon>
+          <lightning-button-icon
+            icon-name="utility:edit"
+            if:false={showEditForm}
+            alternative-text="Editar el detalle del coche"
+            title="Editar detalle del coche"
+            onclick={buttonClickHandler}
+          ></lightning-button-icon>
+          <lightning-button-icon
+            icon-name="utility:undo"
+            if:true={showEditForm}
+            alternative-text="Deshacer cambios de los detalles del coche"
+            title="Deshacer cambios del detalle del coche"
+            onclick={buttonClickHandler}
+          ></lightning-button-icon>
+          <lightning-button-icon
+            icon-name="utility:print"
+            if:true={showEditForm}
+            alternative-text="Imprimir los datos del coche"
+            title="Imprimir los datos del coche"
+            onclick={printButtonClickHandler}
+          ></lightning-button-icon>
+        </div>
+      </header>
+    </div>
+    <div class="slds-card__body slds-card__body_inner">
+      <img src={pictureUrl} alt="" />
+      <div class="details-container" if:false={showEditForm}>
+        <div class="car-detail">
+          <div class="label">Categoría</div>
+          <div class="value">{category}</div>
+        </div>
+        <div class="car-detail">
+          <div class="label">Marca</div>
+          <div class="value">{make}</div>
+        </div>
+        <div class="car-detail">
+          <div class="label">Precio</div>
+          <div class="value">{msrp}</div>
+        </div>
+        <div class="separator">OTRAS CARACTERÍSTICAS</div>
+        <div class="car-detail">
+          <div class="label">Combustibles</div>
+          <div class="value">{fuelType}</div>
+        </div>
+        <div class="car-detail">
+          <div class="label">Puestos</div>
+          <div class="value">{numberOfSeats}</div>
+        </div>
+        <div class="car-detail">
+          <div class="label">Tipo de Control</div>
+          <div class="value">{control}</div>
+        </div>
+      </div>
+      <div class="edit-form-container" if:true={showEditForm}>
+        <c-car-edit-form
+          onsuccess={successHandler}
+          edit-record-id={recordId}
+        ></c-car-edit-form>
+      </div>
+    </div>
+  </article>
+</template>
