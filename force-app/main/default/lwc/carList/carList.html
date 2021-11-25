@@ -1,0 +1,20 @@
+<template>
+  <lightning-card title="Coches">
+    <lightning-layout multiple-rows>
+      <lightning-layout-item
+        size="6"
+        if:true={cars.data}
+        for:each={cars.data}
+        for:item="car"
+        key={car.Id}
+        padding="around-small"
+      >
+        <lightning-card class="clickable" onclick={carClickHandler} data-id={car.Id} title={car.Name} >
+          <img src={car.Picture_URL__c} />
+          <h3>Precio: $ {car.MSRP__c}</h3>
+        </lightning-card>
+      </lightning-layout-item>
+    </lightning-layout>
+    <div if:true={cars.error}>{cars.error.body.message}</div>
+  </lightning-card>
+</template>

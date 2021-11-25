@@ -9,6 +9,14 @@ import CAR_FUEL_TYPE_FIELD from "@salesforce/schema/Car__c.Fuel_Type__c";
 import CAR_NUMBER_OF_SEATS_FIELD from "@salesforce/schema/Car__c.Number_of_Seats__c";
 import CAR_CONTROL_FIELD from "@salesforce/schema/Car__c.Control__c";
 import { getFieldDisplayValue, getFieldValue } from "lightning/uiRecordApi";
+import carSelected from "@salesforce/messageChannel/CarSelected__c";
+
+import {
+  subscribe,
+  unsubscribe,
+  APPLICATION_SCOPE,
+  MessageContext
+} from "lightning/messageService";
 
 const fields = [
   CAR_NAME_FIELD,
@@ -24,6 +32,10 @@ const fields = [
 export default class CarDetail extends LightningElement {
   @api recordId;
   @api showDisplayDetailsButton;
+  subscription;
+
+  @wire(MessageContext)
+  messageContext;
 
   showEditForm = false;
 
@@ -65,11 +77,34 @@ export default class CarDetail extends LightningElement {
   buttonClickHandler() {
     this.showEditForm = !this.showEditForm;
   }
-  successHandler(){
+  successHandler() {
     this.showEditForm = false;
   }
-  printButtonClickHandler(){
-    const editForm = this.template.querySelector('c-car-edit-form');
+  printButtonClickHandler() {
+    const editForm = this.template.querySelector("c-car-edit-form");
     editForm.print();
+  }
+
+  subscribeToMessageChannel() {
+    if (!this.subscription) {
+      this.subscription = subscribe(
+        this.messageContext,
+        carSelected,
+        (message) => this.handleMessage(message),
+        { scope: APPLICATION_SCOPE }
+      );
+    }
+  }
+
+  handleMessage({ carId }) {
+    this.recordId = carId;
+  }
+
+  connectedCallback() {
+    this.subscribeToMessageChannel();
+  }
+  disconnectedCallback() {
+    unsubscribe(this.subscription);
+    this.subscription = null;
   }
 }

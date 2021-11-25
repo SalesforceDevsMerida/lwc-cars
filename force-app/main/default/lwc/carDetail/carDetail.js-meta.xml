@@ -4,6 +4,7 @@
     <isExposed>true</isExposed>
     <targets>
         <target>lightning__RecordPage</target>
+        <target>lightning__AppPage</target>
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__RecordPage">
@@ -15,6 +16,15 @@
       />
             
         </targetConfig>
+        <targetConfig targets="lightning__AppPage">
+          <property
+      name="showDisplayDetailsButton"
+      type="Boolean"
+      default="false"
+      description="Muestra el boton que redirecciona a los detalles"
+    />
+          
+      </targetConfig>
     </targetConfigs>
     <masterLabel>Detalles del coche</masterLabel>
     <description

@@ -21,6 +21,15 @@ public with sharing class CarController {
     }
   }
 
+  @AuraEnabled(cacheable=true)
+  public static List<SObject> getCars(){
+    try {
+      return [SELECT Id, Name, Picture_URL__c, MSRP__c FROM Car__c];
+    } catch (Exception e) {
+      throw new AuraHandledException(e.getMessage());
+    }
+  }
+
   @AuraEnabled
   public static void saveCarDetails(List<Object> values) {
     try {
