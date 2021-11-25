@@ -22,9 +22,15 @@ public with sharing class CarController {
   }
 
   @AuraEnabled(cacheable=true)
-  public static List<SObject> getCars(){
+  public static List<SObject> getCars(String filter){
     try {
-      return [SELECT Id, Name, Picture_URL__c, MSRP__c FROM Car__c];
+      String query = 'SELECT Id, Name, Picture_URL__c, MSRP__c FROM Car__c';
+      // WHERE Name LIKE 'FORD%'
+      if(String.isNotBlank(filter)){
+        query += ' '+filter;
+      }
+      System.debug(query);
+      return Database.query(query);
     } catch (Exception e) {
       throw new AuraHandledException(e.getMessage());
     }
